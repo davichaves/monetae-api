@@ -57,6 +57,8 @@ group :development do
   gem 'rubocop', require: false
 end
 
+gem 'dotenv-rails'
+
 group :development, :test do
   gem 'database_cleaner'
   gem 'dotenv-rails'
