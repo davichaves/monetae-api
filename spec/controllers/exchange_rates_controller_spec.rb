@@ -23,10 +23,10 @@ require 'rails_helper'
 # removed from Rails core in Rails 5, but can be added back in via the
 # `rails-controller-testing` gem.
 
-RSpec.describe ExchangesController, type: :controller do
+RSpec.describe ExchangeRatesController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
-  # Exchange. As you add validations to Exchange, be sure to
+  # ExchangeRate. As you add validations to ExchangeRate, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
@@ -38,12 +38,12 @@ RSpec.describe ExchangesController, type: :controller do
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
-  # ExchangesController. Be sure to keep this updated too.
+  # ExchangeRatesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
   describe "GET #index" do
     it "returns a success response" do
-      exchange = Exchange.create! valid_attributes
+      exchange_rate = ExchangeRate.create! valid_attributes
       get :index, params: {}, session: valid_session
       expect(response).to be_successful
     end
@@ -51,33 +51,33 @@ RSpec.describe ExchangesController, type: :controller do
 
   describe "GET #show" do
     it "returns a success response" do
-      exchange = Exchange.create! valid_attributes
-      get :show, params: {id: exchange.to_param}, session: valid_session
+      exchange_rate = ExchangeRate.create! valid_attributes
+      get :show, params: {id: exchange_rate.to_param}, session: valid_session
       expect(response).to be_successful
     end
   end
 
   describe "POST #create" do
     context "with valid params" do
-      it "creates a new Exchange" do
+      it "creates a new ExchangeRate" do
         expect {
-          post :create, params: {exchange: valid_attributes}, session: valid_session
-        }.to change(Exchange, :count).by(1)
+          post :create, params: {exchange_rate: valid_attributes}, session: valid_session
+        }.to change(ExchangeRate, :count).by(1)
       end
 
-      it "renders a JSON response with the new exchange" do
+      it "renders a JSON response with the new exchange_rate" do
 
-        post :create, params: {exchange: valid_attributes}, session: valid_session
+        post :create, params: {exchange_rate: valid_attributes}, session: valid_session
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq('application/json')
-        expect(response.location).to eq(exchange_url(Exchange.last))
+        expect(response.location).to eq(exchange_rate_url(ExchangeRate.last))
       end
     end
 
     context "with invalid params" do
-      it "renders a JSON response with errors for the new exchange" do
+      it "renders a JSON response with errors for the new exchange_rate" do
 
-        post :create, params: {exchange: invalid_attributes}, session: valid_session
+        post :create, params: {exchange_rate: invalid_attributes}, session: valid_session
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json')
       end
@@ -90,27 +90,27 @@ RSpec.describe ExchangesController, type: :controller do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested exchange" do
-        exchange = Exchange.create! valid_attributes
-        put :update, params: {id: exchange.to_param, exchange: new_attributes}, session: valid_session
-        exchange.reload
+      it "updates the requested exchange_rate" do
+        exchange_rate = ExchangeRate.create! valid_attributes
+        put :update, params: {id: exchange_rate.to_param, exchange_rate: new_attributes}, session: valid_session
+        exchange_rate.reload
         skip("Add assertions for updated state")
       end
 
-      it "renders a JSON response with the exchange" do
-        exchange = Exchange.create! valid_attributes
+      it "renders a JSON response with the exchange_rate" do
+        exchange_rate = ExchangeRate.create! valid_attributes
 
-        put :update, params: {id: exchange.to_param, exchange: valid_attributes}, session: valid_session
+        put :update, params: {id: exchange_rate.to_param, exchange_rate: valid_attributes}, session: valid_session
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json')
       end
     end
 
     context "with invalid params" do
-      it "renders a JSON response with errors for the exchange" do
-        exchange = Exchange.create! valid_attributes
+      it "renders a JSON response with errors for the exchange_rate" do
+        exchange_rate = ExchangeRate.create! valid_attributes
 
-        put :update, params: {id: exchange.to_param, exchange: invalid_attributes}, session: valid_session
+        put :update, params: {id: exchange_rate.to_param, exchange_rate: invalid_attributes}, session: valid_session
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json')
       end
@@ -118,11 +118,11 @@ RSpec.describe ExchangesController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    it "destroys the requested exchange" do
-      exchange = Exchange.create! valid_attributes
+    it "destroys the requested exchange_rate" do
+      exchange_rate = ExchangeRate.create! valid_attributes
       expect {
-        delete :destroy, params: {id: exchange.to_param}, session: valid_session
-      }.to change(Exchange, :count).by(-1)
+        delete :destroy, params: {id: exchange_rate.to_param}, session: valid_session
+      }.to change(ExchangeRate, :count).by(-1)
     end
   end
 

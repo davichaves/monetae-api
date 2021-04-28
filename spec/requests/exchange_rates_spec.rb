@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "Exchanges", type: :request do
-  describe "GET /exchanges" do
+RSpec.describe "ExchangeRates", type: :request do
+  describe "GET /exchange_rates" do
     it "works! (now write some real specs)" do
-      get exchanges_path
+      get exchange_rates_path
       expect(response).to have_http_status(200)
     end
   end
