@@ -5,3 +5,15 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+# Seeding Currencies
+
+require 'json'
+
+path = Rails.root.join('app', 'assets','currencies.json')
+
+currencies = JSON.parse(File.read(path))
+
+currencies["currencies"].each do |currency|
+  Currency.create(currency)
+end
