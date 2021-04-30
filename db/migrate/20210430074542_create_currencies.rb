@@ -3,6 +3,7 @@ class CreateCurrencies < ActiveRecord::Migration[6.0]
     create_table :currencies do |t|
       t.string :name
       t.string :symbol
+      t.string :code
       t.string :country
       t.string :flag
 

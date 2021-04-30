@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_28_024630) do
+ActiveRecord::Schema.define(version: 2021_04_30_074729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2021_04_28_024630) do
   create_table "currencies", force: :cascade do |t|
     t.string "name"
     t.string "symbol"
+    t.string "code"
     t.string "country"
     t.string "flag"
     t.datetime "created_at", precision: 6, null: false
@@ -28,7 +29,7 @@ ActiveRecord::Schema.define(version: 2021_04_28_024630) do
     t.integer "from_currency_id"
     t.integer "to_currency_id"
     t.decimal "rate"
-    t.datetime "at"
+    t.datetime "from_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

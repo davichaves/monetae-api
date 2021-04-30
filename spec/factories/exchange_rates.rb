@@ -3,6 +3,6 @@ FactoryBot.define do
     from_currency_id { 1 }
     to_currency_id { 1 }
     rate { "9.99" }
-    at { "2021-04-27 23:46:30" }
+    from_date { "2021-04-30 04:47:29" }
   end
 end

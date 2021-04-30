@@ -4,7 +4,7 @@ class CreateExchangeRates < ActiveRecord::Migration[6.0]
       t.integer :from_currency_id
       t.integer :to_currency_id
       t.decimal :rate
-      t.datetime :at
+      t.datetime :from_date
 
       t.timestamps
     end
