@@ -26,12 +26,16 @@ ActiveRecord::Schema.define(version: 2021_04_30_074729) do
   end
 
   create_table "exchange_rates", force: :cascade do |t|
-    t.integer "from_currency_id"
-    t.integer "to_currency_id"
+    t.bigint "base_currency_id"
+    t.bigint "to_currency_id"
     t.decimal "rate"
     t.datetime "from_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["base_currency_id"], name: "index_exchange_rates_on_base_currency_id"
+    t.index ["to_currency_id"], name: "index_exchange_rates_on_to_currency_id"
   end
 
+  add_foreign_key "exchange_rates", "currencies", column: "base_currency_id"
+  add_foreign_key "exchange_rates", "currencies", column: "to_currency_id"
 end
