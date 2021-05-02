@@ -8,6 +8,19 @@ class Api::V1::ExchangeRatesController < ApplicationController
     render json: @exchange_rates
   end
 
+  # GET /exchange_rates/base/:base/to/:to
+  def get_rates
+    @base_currency = Currency.find_by(code: params[:base])
+    @to_currency = Currency.find_by(code: params[:to])
+
+    @exchange_rates = ExchangeRate.where(
+      base_currency_id: @base_currency.id,
+      to_currency_id: @to_currency.id,
+    )
+
+    render json: @exchange_rates
+  end
+
   # GET /exchange_rates/base/:base/to/:to/at/:date
   def get_rate_for_date
     @base_currency = Currency.find_by(code: params[:base])
