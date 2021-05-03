@@ -10,29 +10,60 @@ class Api::V1::ExchangeRatesController < ApplicationController
 
   # GET /exchange_rates/base/:base/to/:to
   def get_rates
+    @euro_currency = Currency.find_by(code: "EUR")
     @base_currency = Currency.find_by(code: params[:base])
     @to_currency = Currency.find_by(code: params[:to])
 
-    @exchange_rates = ExchangeRate.where(
-      base_currency_id: @base_currency.id,
+    @base_exchange_rates = ExchangeRate.select("rate, from_date").where(
+      base_currency_id: @euro_currency.id,
+      to_currency_id: @base_currency.id,
+    ).order(:from_date)
+
+    @to_exchange_rates = ExchangeRate.select("rate, from_date").where(
+      base_currency_id: @euro_currency.id,
       to_currency_id: @to_currency.id,
-    )
+    ).order(:from_date)
+
+    @exchange_rates = []
+
+    if @base_exchange_rates.size == @to_exchange_rates.size
+      @base_exchange_rates.zip(@to_exchange_rates).each do |base, to|
+        @exchange_rates << {
+          "rate": (to.rate/base.rate).round(2),
+          "from_date": base.from_date
+        }
+      end
+    end
 
     render json: @exchange_rates
   end
 
   # GET /exchange_rates/base/:base/to/:to/at/:date
   def get_rate_for_date
+    @euro_currency = Currency.find_by(code: "EUR")
     @base_currency = Currency.find_by(code: params[:base])
     @to_currency = Currency.find_by(code: params[:to])
 
-    @exchange_rates = ExchangeRate.where(
-      base_currency_id: @base_currency.id,
+    @base_exchange_rate = ExchangeRate.select("rate, from_date").find_by(
+      base_currency_id: @euro_currency.id,
+      to_currency_id: @base_currency.id,
+      from_date: params[:date].to_datetime
+    )
+
+    @to_exchange_rate = ExchangeRate.select("rate, from_date").find_by(
+      base_currency_id: @euro_currency.id,
       to_currency_id: @to_currency.id,
       from_date: params[:date].to_datetime
     )
 
-    render json: @exchange_rates
+    rate = @to_exchange_rate.rate/@base_exchange_rate.rate
+
+    @exchange_rate = {
+      "rate": rate.round(2),
+      "from_date": @to_exchange_rate.from_date
+    }
+
+    render json: @exchange_rate
   end
 
   # POST /exchange_rates
