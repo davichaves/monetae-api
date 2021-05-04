@@ -1,13 +1,6 @@
 class Api::V1::ExchangeRatesController < ApplicationController
   before_action :set_exchange_rate, only: [:show, :update, :destroy]
 
-  # GET /exchange_rates
-  def index
-    @exchange_rates = ExchangeRate.all
-
-    render json: @exchange_rates
-  end
-
   # GET /exchange_rates/base/:base/to/:to
   def get_rates
     @euro_currency = Currency.find_by(code: "EUR")
@@ -64,6 +57,38 @@ class Api::V1::ExchangeRatesController < ApplicationController
     }
 
     render json: @exchange_rate
+  end
+
+  # GET /exchange_rates/base/:base/to/:to/from_date/:from_date/to_date/:to_date
+  def get_rate_for_date_range
+    @euro_currency = Currency.find_by(code: "EUR")
+    @base_currency = Currency.find_by(code: params[:base])
+    @to_currency = Currency.find_by(code: params[:to])
+
+    @base_exchange_rates = ExchangeRate.select("rate, from_date").where(
+      base_currency_id: @euro_currency.id,
+      to_currency_id: @base_currency.id,
+      from_date: params[:from_date].to_datetime..params[:to_date].to_datetime,
+    ).order(:from_date)
+
+    @to_exchange_rates = ExchangeRate.select("rate, from_date").where(
+      base_currency_id: @euro_currency.id,
+      to_currency_id: @to_currency.id,
+      from_date: params[:from_date].to_datetime..params[:to_date].to_datetime,
+    ).order(:from_date)
+
+    @exchange_rates = []
+
+    if @base_exchange_rates.size == @to_exchange_rates.size
+      @base_exchange_rates.zip(@to_exchange_rates).each do |base, to|
+        @exchange_rates << {
+          "rate": (to.rate/base.rate).round(2),
+          "from_date": base.from_date
+        }
+      end
+    end
+
+    render json: @exchange_rates
   end
 
   # POST /exchange_rates
