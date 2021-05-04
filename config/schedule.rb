@@ -17,7 +17,7 @@
 #   runner "AnotherModel.prune_old_records"
 # end
 
-every 1.day, at: '1:00 am' do
+every 1.day, at: '12:01 am' do
   rake "exchange_rate:retrieve_daily"
 end
 
