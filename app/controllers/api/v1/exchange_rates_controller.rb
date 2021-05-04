@@ -93,8 +93,8 @@ class Api::V1::ExchangeRatesController < ApplicationController
 
   # POST /exchange_rates
   def create
-    start_date = Date.parse('2020-04-15')
-    end_date = Date.parse('2020-04-27')
+    start_date = Date.parse('2020-05-02')
+    end_date = Date.parse('2020-05-04')
 
     (start_date..end_date).each do |day|
       exchange_rate = JSON.parse(RestClient.get "http://data.fixer.io/api/#{day.strftime("%Y-%m-%d")}?access_key=84c960ca7f193d2306f7ac23196f9db9")
